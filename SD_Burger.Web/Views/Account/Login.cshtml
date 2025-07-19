@@ -1,0 +1,66 @@
+@model SD_Burger.Web.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Giriş";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="bi bi-person-circle me-2"></i>Giriş Yap
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Login" method="post">
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label">Kullanıcı Adı</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input asp-for="Username" class="form-control" placeholder="Kullanıcı adınızı giriniz" />
+                            </div>
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Şifre</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Şifrenizi giriniz" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe" name="RememberMe" />
+                            <label class="form-check-label" for="rememberMe">
+                                Beni Hatırla
+                            </label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Giriş Yap
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small class="text-muted">
+                        Hesabınız yok mu? <a href="#" class="text-decoration-none">İletişime Geçin</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

@@ -1,0 +1,76 @@
+@model SD_Burger.Web.Models.PaymentViewModel
+
+@{
+    ViewData["Title"] = "Ödeme Sil";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Ödeme Sil
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <h5>Bu ödemeyi silmek istediğinizden emin misiniz?</h5>
+                        <p>Bu işlem geri alınamaz.</p>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-3">Ödeme No:</dt>
+                        <dd class="col-sm-9">@Model.PaymentNumber</dd>
+
+                        <dt class="col-sm-3">Sipariş:</dt>
+                        <dd class="col-sm-9">@Model.OrderNumber</dd>
+
+                        <dt class="col-sm-3">Tutar:</dt>
+                        <dd class="col-sm-9">@Model.Amount.ToString("C")</dd>
+
+                        <dt class="col-sm-3">Ödeme Yöntemi:</dt>
+                        <dd class="col-sm-9">@Model.PaymentMethod</dd>
+
+                        <dt class="col-sm-3">Durum:</dt>
+                        <dd class="col-sm-9">
+                            @switch (Model.Status)
+                            {
+                                case "Pending":
+                                    <span class="badge bg-warning">Beklemede</span>
+                                    break;
+                                case "Completed":
+                                    <span class="badge bg-success">Tamamlandı</span>
+                                    break;
+                                case "Failed":
+                                    <span class="badge bg-danger">Başarısız</span>
+                                    break;
+                                case "Refunded":
+                                    <span class="badge bg-info">İade Edildi</span>
+                                    break;
+                                default:
+                                    <span class="badge bg-secondary">@Model.Status</span>
+                                    break;
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Oluşturulma Tarihi:</dt>
+                        <dd class="col-sm-9">@(Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "Belirtilmemiş")</dd>
+                    </dl>
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Geri Dön
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Sil
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

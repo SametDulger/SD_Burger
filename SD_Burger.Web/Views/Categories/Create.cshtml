@@ -1,0 +1,156 @@
+@model CreateCategoryViewModel
+@{
+    ViewData["Title"] = "Yeni Kategori";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Yeni Kategori Oluştur</h1>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Geri
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Kategori Bilgileri</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label asp-for="Name" class="form-label">Kategori Adı *</label>
+                                <input asp-for="Name" class="form-control" placeholder="Kategori adını giriniz" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="DisplayOrder" class="form-label">Görüntüleme Sırası *</label>
+                                <input asp-for="DisplayOrder" type="number" class="form-control" min="1" placeholder="Sıra numarası" />
+                                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Açıklama</label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Kategori açıklamasını giriniz"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Kategori Resmi</label>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*" />
+                            <button type="button" class="btn btn-outline-secondary" onclick="clearImage()">Temizle</button>
+                        </div>
+                        <div class="form-text">PNG, JPG, JPEG dosyaları kabul edilir. Maksimum boyut: 5MB</div>
+                        <input asp-for="ImageUrl" type="hidden" id="imageUrl" />
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> Oluştur
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> İptal
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">Bilgi</h6>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">
+                    <i class="bi bi-info-circle"></i>
+                    Yeni kategori oluştururken dikkat edilmesi gerekenler:
+                </p>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-check text-success"></i> Kategori adı zorunludur</li>
+                    <li><i class="bi bi-check text-success"></i> Görüntüleme sırası belirleyin</li>
+                    <li><i class="bi bi-check text-success"></i> Açıklama isteğe bağlıdır</li>
+                    <li><i class="bi bi-check text-success"></i> Resim yükleme isteğe bağlıdır</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">Önizleme</h6>
+            </div>
+            <div class="card-body">
+                <div id="preview">
+                    <div class="text-center">
+                        <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-2">Resim seçildiğinde önizleme görünecek</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        document.getElementById('imageFile').addEventListener('change', function() {
+            const file = this.files[0];
+            const preview = document.getElementById('preview');
+            
+            if (file) {
+                // Dosya boyutu kontrolü (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Dosya boyutu 5MB\'dan büyük olamaz!');
+                    this.value = '';
+                    return;
+                }
+                
+                // Dosya tipi kontrolü
+                if (!file.type.startsWith('image/')) {
+                    alert('Lütfen geçerli bir resim dosyası seçin!');
+                    this.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" alt="Önizleme" class="img-fluid rounded" />
+                        <p class="text-muted mt-2">${file.name}</p>
+                    `;
+                    document.getElementById('imageUrl').value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = `
+                    <div class="text-center">
+                        <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-2">Resim seçildiğinde önizleme görünecek</p>
+                    </div>
+                `;
+                document.getElementById('imageUrl').value = '';
+            }
+        });
+        
+        function clearImage() {
+            document.getElementById('imageFile').value = '';
+            document.getElementById('imageUrl').value = '';
+            document.getElementById('preview').innerHTML = `
+                <div class="text-center">
+                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                    <p class="text-muted mt-2">Resim seçildiğinde önizleme görünecek</p>
+                </div>
+            `;
+        }
+    </script>
+} 

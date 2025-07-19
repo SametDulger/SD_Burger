@@ -1,0 +1,195 @@
+@model SD_Burger.Web.Models.DashboardReportViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-graph-up me-2"></i>Dashboard
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Toplam Satış</h5>
+                                    <h3>@Model.TotalSales.ToString("C")</h3>
+                                    <small>Bu ay</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Toplam Sipariş</h5>
+                                    <h3>@Model.TotalOrders</h3>
+                                    <small>Bu ay</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Aktif Rezervasyon</h5>
+                                    <h3>@Model.ActiveReservations</h3>
+                                    <small>Bugün</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Toplam Kullanıcı</h5>
+                                    <h3>@Model.TotalUsers</h3>
+                                    <small>Aktif</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Aylık Satış Grafiği</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="salesChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Sipariş Durumu</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="orderStatusChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">En Çok Satan Ürünler</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Ürün</th>
+                                                    <th>Satış Adedi</th>
+                                                    <th>Toplam Gelir</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.TopSellingItems)
+                                                {
+                                                    <tr>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Quantity</td>
+                                                        <td>@item.TotalRevenue.ToString("C")</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Şube Performansı</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Şube</th>
+                                                    <th>Satış</th>
+                                                    <th>Sipariş</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var branch in Model.BranchPerformance)
+                                                {
+                                                    <tr>
+                                                        <td>@branch.Name</td>
+                                                        <td>@branch.Sales.ToString("C")</td>
+                                                        <td>@branch.OrderCount</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Aylık satış grafiği
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        new Chart(salesCtx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.MonthlySales.Select(x => x.Month))),
+                datasets: [{
+                    label: 'Satış',
+                    data: @Html.Raw(Json.Serialize(Model.MonthlySales.Select(x => x.Amount))),
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Sipariş durumu grafiği
+        const orderStatusCtx = document.getElementById('orderStatusChart').getContext('2d');
+        new Chart(orderStatusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Tamamlandı', 'Hazırlanıyor', 'Beklemede', 'İptal'],
+                datasets: [{
+                    data: [@Model.CompletedOrders, @Model.PreparingOrders, @Model.PendingOrders, @Model.CancelledOrders],
+                    backgroundColor: ['#28a745', '#ffc107', '#17a2b8', '#dc3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+} 

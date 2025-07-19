@@ -1,0 +1,193 @@
+@model SD_Burger.Web.Models.UserReportViewModel
+
+@{
+    ViewData["Title"] = "Kullanıcı Raporu";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-people me-2"></i>Kullanıcı Raporu
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Toplam Kullanıcı</h5>
+                                    <h3>@Model.TotalUsers</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Aktif Kullanıcı</h5>
+                                    <h3>@Model.ActiveUsers</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pasif Kullanıcı</h5>
+                                    <h3>@Model.InactiveUsers</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Bu Ay Eklenen</h5>
+                                    <h3>@Model.NewUsersThisMonth</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Kullanıcı Durumu</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="userStatusChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Rol Dağılımı</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="roleChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Kullanıcı Listesi</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Ad Soyad</th>
+                                                    <th>E-posta</th>
+                                                    <th>Telefon</th>
+                                                    <th>Rol</th>
+                                                    <th>Durum</th>
+                                                    <th>Kayıt Tarihi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var user in Model.Users)
+                                                {
+                                                    <tr>
+                                                        <td>@user.FirstName @user.LastName</td>
+                                                        <td>@user.Email</td>
+                                                        <td>@user.Phone</td>
+                                                        <td>
+                                                            @switch (user.Role)
+                                                            {
+                                                                case "Admin":
+                                                                    <span class="badge bg-danger">Yönetici</span>
+                                                                    break;
+                                                                case "Manager":
+                                                                    <span class="badge bg-warning">Müdür</span>
+                                                                    break;
+                                                                case "Staff":
+                                                                    <span class="badge bg-info">Personel</span>
+                                                                    break;
+                                                                case "Cashier":
+                                                                    <span class="badge bg-primary">Kasiyer</span>
+                                                                    break;
+                                                                default:
+                                                                    <span class="badge bg-secondary">@user.Role</span>
+                                                                    break;
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @if (user.IsActive)
+                                                            {
+                                                                <span class="badge bg-success">Aktif</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="badge bg-secondary">Pasif</span>
+                                                            }
+                                                        </td>
+                                                        <td>@(user.CreatedAt?.ToString("dd/MM/yyyy") ?? "Belirtilmemiş")</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Kullanıcı durumu grafiği
+        const userStatusCtx = document.getElementById('userStatusChart').getContext('2d');
+        new Chart(userStatusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Aktif', 'Pasif'],
+                datasets: [{
+                    data: [@Model.ActiveUsers, @Model.InactiveUsers],
+                    backgroundColor: ['#28a745', '#6c757d']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Rol dağılımı grafiği
+        const roleCtx = document.getElementById('roleChart').getContext('2d');
+        new Chart(roleCtx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.RoleDistribution.Select(x => x.Role))),
+                datasets: [{
+                    label: 'Kullanıcı Sayısı',
+                    data: @Html.Raw(Json.Serialize(Model.RoleDistribution.Select(x => x.Count))),
+                    backgroundColor: ['#dc3545', '#ffc107', '#17a2b8', '#007bff']
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+} 

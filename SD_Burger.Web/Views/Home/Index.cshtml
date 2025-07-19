@@ -1,0 +1,127 @@
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="text-center">
+    <h1 class="display-4">SD Burger Yönetim Paneli</h1>
+    <p class="lead">Restoran yönetim sistemine hoş geldiniz.</p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-shop display-4 text-primary"></i>
+                <h5 class="card-title mt-3">Şubeler</h5>
+                <p class="card-text">Şube yönetimi ve bilgileri</p>
+                <a asp-controller="Branches" asp-action="Index" class="btn btn-primary">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-list-ul display-4 text-success"></i>
+                <h5 class="card-title mt-3">Kategoriler</h5>
+                <p class="card-text">Menü kategorileri yönetimi</p>
+                <a asp-controller="Categories" asp-action="Index" class="btn btn-success">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-box-seam display-4 text-warning"></i>
+                <h5 class="card-title mt-3">Malzemeler</h5>
+                <p class="card-text">Malzeme ve stok yönetimi</p>
+                <a asp-controller="Ingredients" asp-action="Index" class="btn btn-warning">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-cart display-4 text-info"></i>
+                <h5 class="card-title mt-3">Siparişler</h5>
+                <p class="card-text">Sipariş takibi ve yönetimi</p>
+                <a asp-controller="Orders" asp-action="Index" class="btn btn-info">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-table display-4 text-secondary"></i>
+                <h5 class="card-title mt-3">Masalar</h5>
+                <p class="card-text">Masa durumu ve yönetimi</p>
+                <a asp-controller="Tables" asp-action="Index" class="btn btn-secondary">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-calendar-check display-4 text-danger"></i>
+                <h5 class="card-title mt-3">Rezervasyonlar</h5>
+                <p class="card-text">Rezervasyon yönetimi</p>
+                <a asp-controller="Reservations" asp-action="Index" class="btn btn-danger">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-credit-card display-4 text-dark"></i>
+                <h5 class="card-title mt-3">Ödemeler</h5>
+                <p class="card-text">Ödeme işlemleri takibi</p>
+                <a asp-controller="Payments" asp-action="Index" class="btn btn-dark">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-graph-up display-4 text-primary"></i>
+                <h5 class="card-title mt-3">Raporlar</h5>
+                <p class="card-text">Detaylı raporlar ve analizler</p>
+                <a asp-controller="Reports" asp-action="Dashboard" class="btn btn-primary">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-people display-4 text-success"></i>
+                <h5 class="card-title mt-3">Kullanıcılar</h5>
+                <p class="card-text">Kullanıcı yönetimi ve yetkilendirme</p>
+                <a asp-controller="Users" asp-action="Index" class="btn btn-success">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-boxes display-4 text-warning"></i>
+                <h5 class="card-title mt-3">Envanter</h5>
+                <p class="card-text">Stok takibi ve envanter yönetimi</p>
+                <a asp-controller="Inventory" asp-action="Index" class="btn btn-warning">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-egg-fried display-4 text-info"></i>
+                <h5 class="card-title mt-3">Menü Öğeleri</h5>
+                <p class="card-text">Menü öğeleri yönetimi</p>
+                <a asp-controller="MenuItems" asp-action="Index" class="btn btn-info">Görüntüle</a>
+            </div>
+        </div>
+    </div>
+</div> 

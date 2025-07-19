@@ -1,0 +1,142 @@
+@model SD_Burger.Web.Models.MenuItemViewModel
+
+@{
+    ViewData["Title"] = "Menü Öğesi Düzenle";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-pencil-square me-2"></i>Menü Öğesi Düzenle
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Name" class="form-label">Ürün Adı</label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="CategoryId" class="form-label">Kategori</label>
+                                    <select asp-for="CategoryId" class="form-select" asp-items="@ViewBag.Categories">
+                                        <option value="">Kategori Seçin</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Description" class="form-label">Açıklama</label>
+                                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Price" class="form-label">Fiyat</label>
+                                    <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="IsAvailable" class="form-label">Mevcut</label>
+                                    <select asp-for="IsAvailable" class="form-select">
+                                        <option value="true">Evet</option>
+                                        <option value="false">Hayır</option>
+                                    </select>
+                                    <span asp-validation-for="IsAvailable" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="IsActive" class="form-label">Durum</label>
+                                    <select asp-for="IsActive" class="form-select">
+                                        <option value="true">Aktif</option>
+                                        <option value="false">Pasif</option>
+                                    </select>
+                                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Ürün Resmi</label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*" />
+                                        <button type="button" class="btn btn-outline-secondary" onclick="clearImage()">Temizle</button>
+                                    </div>
+                                    <div class="form-text">PNG, JPG, JPEG dosyaları kabul edilir. Maksimum boyut: 5MB</div>
+                                    <input asp-for="ImageUrl" type="hidden" id="imageUrl" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Geri Dön
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-1"></i>Güncelle
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        document.getElementById('imageFile').addEventListener('change', function() {
+            const file = this.files[0];
+            
+            if (file) {
+                // Dosya boyutu kontrolü (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Dosya boyutu 5MB\'dan büyük olamaz!');
+                    this.value = '';
+                    return;
+                }
+                
+                // Dosya tipi kontrolü
+                if (!file.type.startsWith('image/')) {
+                    alert('Lütfen geçerli bir resim dosyası seçin!');
+                    this.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imageUrl').value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('imageUrl').value = '';
+            }
+        });
+        
+        function clearImage() {
+            document.getElementById('imageFile').value = '';
+            document.getElementById('imageUrl').value = '';
+        }
+    </script>
+} 

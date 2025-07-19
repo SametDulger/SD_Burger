@@ -1,0 +1,66 @@
+@model SD_Burger.Web.Models.IngredientViewModel
+
+@{
+    ViewData["Title"] = "Malzeme Sil";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Malzeme Sil
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <h5>Bu malzemeyi silmek istediğinizden emin misiniz?</h5>
+                        <p>Bu işlem geri alınamaz ve malzemeye bağlı tüm menü öğeleri etkilenebilir.</p>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-3">Malzeme Adı:</dt>
+                        <dd class="col-sm-9">@Model.Name</dd>
+
+                        <dt class="col-sm-3">Açıklama:</dt>
+                        <dd class="col-sm-9">@Model.Description</dd>
+
+                        <dt class="col-sm-3">Birim:</dt>
+                        <dd class="col-sm-9">@Model.Unit</dd>
+
+                        <dt class="col-sm-3">Birim Fiyat:</dt>
+                        <dd class="col-sm-9">@Model.UnitPrice.ToString("C")</dd>
+
+                        <dt class="col-sm-3">Durum:</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Pasif</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Oluşturulma Tarihi:</dt>
+                        <dd class="col-sm-9">@(Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "Belirtilmemiş")</dd>
+                    </dl>
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Geri Dön
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Sil
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

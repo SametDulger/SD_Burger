@@ -1,0 +1,101 @@
+@model BranchViewModel
+@{
+    ViewData["Title"] = "Şube Detayları";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Şube Detayları</h1>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> Düzenle
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Geri
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">@Model.Name</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">ID:</dt>
+                            <dd class="col-sm-8">@Model.Id</dd>
+                            
+                            <dt class="col-sm-4">Şube Adı:</dt>
+                            <dd class="col-sm-8">@Model.Name</dd>
+                            
+                            <dt class="col-sm-4">Adres:</dt>
+                            <dd class="col-sm-8">@Model.Address</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">Telefon:</dt>
+                            <dd class="col-sm-8">@Model.PhoneNumber</dd>
+                            
+                            <dt class="col-sm-4">E-posta:</dt>
+                            <dd class="col-sm-8">@Model.Email</dd>
+                            
+                            <dt class="col-sm-4">Masa Sayısı:</dt>
+                            <dd class="col-sm-8">
+                                <span class="badge bg-info">@Model.TableCount</span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <dl class="row">
+                            <dt class="col-sm-2">Durum:</dt>
+                            <dd class="col-sm-10">
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Pasif</span>
+                                }
+                            </dd>
+                            
+                            <dt class="col-sm-2">Oluşturulma:</dt>
+                            <dd class="col-sm-10">@Model.CreatedDate.ToString("dd.MM.yyyy HH:mm")</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">Hızlı İşlemler</h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a asp-controller="Tables" asp-action="Index" class="btn btn-outline-primary">
+                        <i class="bi bi-table"></i> Masaları Görüntüle
+                    </a>
+                    <a asp-controller="Orders" asp-action="Index" class="btn btn-outline-success">
+                        <i class="bi bi-cart"></i> Siparişleri Görüntüle
+                    </a>
+                    <a asp-controller="Reservations" asp-action="Index" class="btn btn-outline-info">
+                        <i class="bi bi-calendar-check"></i> Rezervasyonları Görüntüle
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i> Şubeyi Sil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
