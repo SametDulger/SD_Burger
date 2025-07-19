@@ -1,0 +1,97 @@
+@model SD_Burger.Web.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Kullanıcı Detayları";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-info-circle me-2"></i>Kullanıcı Detayları
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Ad Soyad:</dt>
+                        <dd class="col-sm-9">@Model.FirstName @Model.LastName</dd>
+
+                        <dt class="col-sm-3">E-posta:</dt>
+                        <dd class="col-sm-9">@Model.Email</dd>
+
+                        <dt class="col-sm-3">Telefon:</dt>
+                        <dd class="col-sm-9">@Model.Phone</dd>
+
+                        <dt class="col-sm-3">Kullanıcı Adı:</dt>
+                        <dd class="col-sm-9">@Model.Username</dd>
+
+                        <dt class="col-sm-3">Rol:</dt>
+                        <dd class="col-sm-9">
+                            @switch (Model.Role)
+                            {
+                                case "Admin":
+                                    <span class="badge bg-danger">Yönetici</span>
+                                    break;
+                                case "Manager":
+                                    <span class="badge bg-warning">Müdür</span>
+                                    break;
+                                case "Staff":
+                                    <span class="badge bg-info">Personel</span>
+                                    break;
+                                case "Cashier":
+                                    <span class="badge bg-primary">Kasiyer</span>
+                                    break;
+                                default:
+                                    <span class="badge bg-secondary">@Model.Role</span>
+                                    break;
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Durum:</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Pasif</span>
+                            }
+                        </dd>
+
+                        @if (!string.IsNullOrEmpty(Model.Address))
+                        {
+                            <dt class="col-sm-3">Adres:</dt>
+                            <dd class="col-sm-9">@Model.Address</dd>
+                        }
+
+                        <dt class="col-sm-3">Oluşturulma Tarihi:</dt>
+                        <dd class="col-sm-9">@(Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "Belirtilmemiş")</dd>
+
+                        @if (Model.UpdatedAt.HasValue)
+                        {
+                            <dt class="col-sm-3">Güncellenme Tarihi:</dt>
+                            <dd class="col-sm-9">@Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                        }
+                    </dl>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Geri Dön
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary me-2">
+                                <i class="bi bi-pencil-square me-1"></i>Düzenle
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Sil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

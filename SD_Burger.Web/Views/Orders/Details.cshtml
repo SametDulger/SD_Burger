@@ -1,0 +1,97 @@
+@model SD_Burger.Web.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "Sipariş Detayları";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-info-circle me-2"></i>Sipariş Detayları
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Sipariş No:</dt>
+                        <dd class="col-sm-9">@Model.OrderNumber</dd>
+
+                        <dt class="col-sm-3">Müşteri Adı:</dt>
+                        <dd class="col-sm-9">@Model.CustomerName</dd>
+
+                        <dt class="col-sm-3">Müşteri Telefonu:</dt>
+                        <dd class="col-sm-9">@Model.CustomerPhone</dd>
+
+                        <dt class="col-sm-3">Şube:</dt>
+                        <dd class="col-sm-9">@Model.BranchName</dd>
+
+                        <dt class="col-sm-3">Masa:</dt>
+                        <dd class="col-sm-9">@Model.TableName</dd>
+
+                        <dt class="col-sm-3">Sipariş Tipi:</dt>
+                        <dd class="col-sm-9">@Model.OrderType</dd>
+
+                        <dt class="col-sm-3">Durum:</dt>
+                        <dd class="col-sm-9">
+                            @switch (Model.Status)
+                            {
+                                case "Pending":
+                                    <span class="badge bg-warning">Beklemede</span>
+                                    break;
+                                case "Preparing":
+                                    <span class="badge bg-info">Hazırlanıyor</span>
+                                    break;
+                                case "Ready":
+                                    <span class="badge bg-primary">Hazır</span>
+                                    break;
+                                case "Completed":
+                                    <span class="badge bg-success">Tamamlandı</span>
+                                    break;
+                                case "Cancelled":
+                                    <span class="badge bg-danger">İptal Edildi</span>
+                                    break;
+                                default:
+                                    <span class="badge bg-secondary">@Model.Status</span>
+                                    break;
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Toplam Tutar:</dt>
+                        <dd class="col-sm-9">@Model.TotalAmount.ToString("C")</dd>
+
+                        @if (!string.IsNullOrEmpty(Model.Notes))
+                        {
+                            <dt class="col-sm-3">Notlar:</dt>
+                            <dd class="col-sm-9">@Model.Notes</dd>
+                        }
+
+                        <dt class="col-sm-3">Oluşturulma Tarihi:</dt>
+                        <dd class="col-sm-9">@(Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "Belirtilmemiş")</dd>
+
+                        @if (Model.UpdatedAt.HasValue)
+                        {
+                            <dt class="col-sm-3">Güncellenme Tarihi:</dt>
+                            <dd class="col-sm-9">@Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                        }
+                    </dl>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Geri Dön
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary me-2">
+                                <i class="bi bi-pencil-square me-1"></i>Düzenle
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Sil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

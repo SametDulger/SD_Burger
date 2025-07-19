@@ -1,0 +1,85 @@
+@model SD_Burger.Web.Models.IngredientViewModel
+
+@{
+    ViewData["Title"] = "Yeni Malzeme Ekle";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-plus-circle me-2"></i>Yeni Malzeme Ekle
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Name" class="form-label">Malzeme Adı</label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Description" class="form-label">Açıklama</label>
+                                    <input asp-for="Description" class="form-control" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="Unit" class="form-label">Birim</label>
+                                    <select asp-for="Unit" class="form-select">
+                                        <option value="">Birim Seçin</option>
+                                        @if (ViewBag.Units != null)
+                                        {
+                                            foreach (var unit in ViewBag.Units)
+                                            {
+                                                <option value="@unit.Value">@unit.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Unit" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="UnitPrice" class="form-label">Birim Fiyat</label>
+                                    <input asp-for="UnitPrice" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="MinimumStock" class="form-label">Minimum Stok</label>
+                                    <input asp-for="MinimumStock" class="form-control" type="number" />
+                                    <span asp-validation-for="MinimumStock" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Geri Dön
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-1"></i>Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

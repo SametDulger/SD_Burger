@@ -1,0 +1,223 @@
+@model SalesReportViewModel
+@{
+    ViewData["Title"] = "Satış Raporları";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Satış Raporları</h1>
+    <div>
+        <button class="btn btn-success" onclick="window.print()">
+            <i class="bi bi-printer"></i> Yazdır
+        </button>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Geri
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Toplam Satış</h6>
+                        <h3 class="mb-0">@Model.TotalSales.ToString("C")</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-currency-dollar display-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Toplam Sipariş</h6>
+                        <h3 class="mb-0">@Model.TotalOrders</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-cart display-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Ortalama Sipariş</h6>
+                        <h3 class="mb-0">@Model.AverageOrderValue.ToString("C")</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-graph-up display-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Aktif Siparişler</h6>
+                        <h3 class="mb-0">@Model.ActiveOrders</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-clock display-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Satış Grafiği</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="salesChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">En Çok Satan Ürünler</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.TopSellingItems != null && Model.TopSellingItems.Any())
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (var item in Model.TopSellingItems.Take(5))
+                        {
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0">@item.Name</h6>
+                                    <small class="text-muted">@item.Quantity adet</small>
+                                </div>
+                                <span class="badge bg-primary rounded-pill">@item.TotalSales.ToString("C")</span>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted text-center">Henüz satış verisi bulunmuyor.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Detaylı Satış Raporu</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Tarih</th>
+                                <th>Sipariş No</th>
+                                <th>Müşteri</th>
+                                <th>Ürünler</th>
+                                <th>Durum</th>
+                                <th>Tutar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentOrders != null && Model.RecentOrders.Any())
+                            {
+                                @foreach (var order in Model.RecentOrders)
+                                {
+                                    <tr>
+                                        <td>@(order.OrderDate?.ToString("dd.MM.yyyy HH:mm") ?? "Belirtilmemiş")</td>
+                                        <td>@order.OrderNumber</td>
+                                        <td>@order.CustomerName</td>
+                                        <td>
+                                            @if (order.OrderItems != null && order.OrderItems.Any())
+                                            {
+                                                <small>
+                                                    @string.Join(", ", order.OrderItems.Select(oi => $"{oi.MenuItemName} ({oi.Quantity})"))
+                                                </small>
+                                            }
+                                        </td>
+                                        <td>
+                                            @switch (order.Status.ToLower())
+                                            {
+                                                case "tamamlandı":
+                                                    <span class="badge bg-success">Tamamlandı</span>
+                                                    break;
+                                                case "hazırlanıyor":
+                                                    <span class="badge bg-info">Hazırlanıyor</span>
+                                                    break;
+                                                case "beklemede":
+                                                    <span class="badge bg-warning">Beklemede</span>
+                                                    break;
+                                                default:
+                                                    <span class="badge bg-secondary">@order.Status</span>
+                                                    break;
+                                            }
+                                        </td>
+                                        <td class="fw-bold">@order.TotalAmount.ToString("C")</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">Henüz sipariş bulunmuyor.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script>
+        // Satış grafiği
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran'],
+                datasets: [{
+                    label: 'Aylık Satışlar',
+                    data: [12000, 19000, 15000, 25000, 22000, 30000],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+} 

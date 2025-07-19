@@ -1,0 +1,172 @@
+@model SD_Burger.Web.Models.InventoryReportViewModel
+
+@{
+    ViewData["Title"] = "Stok Raporu";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-box-seam me-2"></i>Stok Raporu
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Toplam Malzeme</h5>
+                                    <h3>@Model.TotalIngredients</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Yeterli Stok</h5>
+                                    <h3>@Model.SufficientStock</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Düşük Stok</h5>
+                                    <h3>@Model.LowStock</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-danger text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Stok Yok</h5>
+                                    <h3>@Model.OutOfStock</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Stok Durumu Grafiği</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="stockChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Şube Bazında Stok</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="branchChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Düşük Stok Listesi</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Malzeme</th>
+                                                    <th>Şube</th>
+                                                    <th>Mevcut Stok</th>
+                                                    <th>Minimum Stok</th>
+                                                    <th>Durum</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.LowStockInventory)
+                                                {
+                                                    <tr>
+                                                        <td>@item.IngredientName</td>
+                                                        <td>@item.BranchName</td>
+                                                        <td>@item.Quantity @item.Unit</td>
+                                                        <td>@item.MinimumStock @item.Unit</td>
+                                                        <td>
+                                                            @if (item.Quantity <= 0)
+                                                            {
+                                                                <span class="badge bg-danger">Stok Yok</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="badge bg-warning">Düşük Stok</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Stok durumu grafiği
+        const stockCtx = document.getElementById('stockChart').getContext('2d');
+        new Chart(stockCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Yeterli Stok', 'Düşük Stok', 'Stok Yok'],
+                datasets: [{
+                    data: [@Model.SufficientStock, @Model.LowStock, @Model.OutOfStock],
+                    backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Şube bazında stok grafiği
+        const branchCtx = document.getElementById('branchChart').getContext('2d');
+        new Chart(branchCtx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.BranchStockData.Select(x => x.BranchName))),
+                datasets: [{
+                    label: 'Toplam Stok',
+                    data: @Html.Raw(Json.Serialize(Model.BranchStockData.Select(x => x.TotalStock))),
+                    backgroundColor: '#007bff'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+} 

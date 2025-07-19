@@ -1,0 +1,118 @@
+@model IEnumerable<UserViewModel>
+@{
+    ViewData["Title"] = "Kullanıcılar";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Kullanıcılar</h1>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Yeni Kullanıcı
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Kullanıcı Listesi</h5>
+            </div>
+            <div class="card-body">
+                @if (!Model.Any())
+                {
+                    <div class="text-center py-4">
+                        <i class="bi bi-people display-1 text-muted"></i>
+                        <p class="lead mt-3">Henüz kullanıcı bulunmuyor.</p>
+                        <a asp-action="Create" class="btn btn-primary">İlk Kullanıcıyı Oluştur</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Ad Soyad</th>
+                                    <th>E-posta</th>
+                                    <th>Telefon</th>
+                                    <th>Rol</th>
+                                    <th>Şube</th>
+                                    <th>Durum</th>
+                                    <th>Son Giriş</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                    <tr>
+                                        <td>@user.Id</td>
+                                        <td>
+                                            <strong>@user.FirstName @user.LastName</strong>
+                                        </td>
+                                        <td>@user.Email</td>
+                                        <td>@user.PhoneNumber</td>
+                                        <td>
+                                            @switch (user.Role.ToLower())
+                                            {
+                                                case "admin":
+                                                    <span class="badge bg-danger">Admin</span>
+                                                    break;
+                                                case "manager":
+                                                    <span class="badge bg-warning">Müdür</span>
+                                                    break;
+                                                case "waiter":
+                                                    <span class="badge bg-info">Garson</span>
+                                                    break;
+                                                case "cashier":
+                                                    <span class="badge bg-success">Kasiyer</span>
+                                                    break;
+                                                default:
+                                                    <span class="badge bg-secondary">@user.Role</span>
+                                                    break;
+                                            }
+                                        </td>
+                                        <td>@user.BranchName</td>
+                                        <td>
+                                            @if (user.IsActive)
+                                            {
+                                                <span class="badge bg-success">Aktif</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">Pasif</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (user.LastLoginDate.HasValue)
+                                            {
+                                                @user.LastLoginDate.Value.ToString("dd.MM.yyyy HH:mm")
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Hiç giriş yapmamış</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-outline-warning btn-sm">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-outline-danger btn-sm">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div> 
