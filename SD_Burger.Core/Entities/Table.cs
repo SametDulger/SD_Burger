@@ -9,9 +9,9 @@ namespace SD_Burger.Core.Entities
         public int Capacity { get; set; }
         public TableStatus Status { get; set; }
         public int BranchId { get; set; }
-        public virtual Branch Branch { get; set; }
-        public virtual ICollection<Reservation> Reservations { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual Branch? Branch { get; set; }
+        public virtual List<Reservation> Reservations { get; set; } = new();
+        public virtual List<Order> Orders { get; set; } = new();
     }
 
     public enum TableStatus

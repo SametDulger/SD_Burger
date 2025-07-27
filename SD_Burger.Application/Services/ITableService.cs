@@ -6,8 +6,8 @@ namespace SD_Burger.Application.Services
     {
         Task<IEnumerable<TableDto>> GetAllAsync();
         Task<TableDto> GetByIdAsync(int id);
-        Task<TableDto> CreateAsync(TableDto tableDto);
-        Task<TableDto> UpdateAsync(int id, TableDto tableDto);
+        Task<TableDto> CreateAsync(CreateTableDto createTableDto);
+        Task<TableDto> UpdateAsync(int id, UpdateTableDto updateTableDto);
         Task DeleteAsync(int id);
     }
 } 

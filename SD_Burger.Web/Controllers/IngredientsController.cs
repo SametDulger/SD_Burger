@@ -49,7 +49,7 @@ namespace SD_Burger.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             try
             {

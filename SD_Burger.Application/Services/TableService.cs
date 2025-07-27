@@ -31,14 +31,14 @@ namespace SD_Burger.Application.Services
             return EntityMappers.ToTableDto(table);
         }
 
-        public async Task<TableDto> CreateAsync(TableDto tableDto)
+        public async Task<TableDto> CreateAsync(CreateTableDto createTableDto)
         {
             var table = new Table
             {
-                TableNumber = tableDto.TableNumber,
-                Capacity = tableDto.Capacity,
-                Status = tableDto.Status,
-                BranchId = tableDto.BranchId,
+                TableNumber = createTableDto.TableNumber,
+                Capacity = createTableDto.Capacity,
+                Status = createTableDto.Status,
+                BranchId = createTableDto.BranchId,
                 CreatedDate = DateTime.UtcNow,
                 UpdatedDate = DateTime.UtcNow
             };
@@ -49,16 +49,16 @@ namespace SD_Burger.Application.Services
             return EntityMappers.ToTableDto(table);
         }
 
-        public async Task<TableDto> UpdateAsync(int id, TableDto tableDto)
+        public async Task<TableDto> UpdateAsync(int id, UpdateTableDto updateTableDto)
         {
             var table = await _tableRepository.GetByIdAsync(id);
             if (table == null)
                 throw new ArgumentException($"Table with ID {id} not found.");
 
-            table.TableNumber = tableDto.TableNumber;
-            table.Capacity = tableDto.Capacity;
-            table.Status = tableDto.Status;
-            table.BranchId = tableDto.BranchId;
+            table.TableNumber = updateTableDto.TableNumber;
+            table.Capacity = updateTableDto.Capacity;
+            table.Status = updateTableDto.Status;
+            table.BranchId = updateTableDto.BranchId;
             table.UpdatedDate = DateTime.UtcNow;
 
             await _tableRepository.UpdateAsync(table);
