@@ -17,10 +17,11 @@ namespace SD_Burger.Web.Services
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonOptions;
 
-        public ApiService(HttpClient httpClient)
+        public ApiService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5269/api/");
+            var baseUrl = configuration["ApiSettings:BaseUrl"] ?? "http://localhost:5269/api/";
+            _httpClient.BaseAddress = new Uri(baseUrl);
             _jsonOptions = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,

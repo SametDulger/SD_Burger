@@ -8,17 +8,17 @@ namespace SD_Burger.Core.Entities
         public DateTime ReservationDate { get; set; }
         public TimeSpan ReservationTime { get; set; }
         public int GuestCount { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerPhone { get; set; }
-        public string CustomerEmail { get; set; }
-        public string SpecialRequests { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
+        public string CustomerPhone { get; set; } = string.Empty;
+        public string CustomerEmail { get; set; } = string.Empty;
+        public string SpecialRequests { get; set; } = string.Empty;
         public ReservationStatus Status { get; set; }
         public int TableId { get; set; }
         public int BranchId { get; set; }
         public int? UserId { get; set; }
-        public virtual Table Table { get; set; }
-        public virtual Branch Branch { get; set; }
-        public virtual User User { get; set; }
+        public virtual Table? Table { get; set; }
+        public virtual Branch? Branch { get; set; }
+        public virtual User? User { get; set; }
     }
 
     public enum ReservationStatus

@@ -14,7 +14,7 @@ namespace SD_Burger.Application.DTOs
         public TableStatus Status { get; set; }
         
         public int BranchId { get; set; }
-        public string BranchName { get; set; }
+        public string? BranchName { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
