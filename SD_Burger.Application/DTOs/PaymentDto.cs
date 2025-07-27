@@ -8,7 +8,7 @@ namespace SD_Burger.Application.DTOs
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
-        public string OrderNumber { get; set; }
+        public string? OrderNumber { get; set; }
         public decimal Amount { get; set; }
         
         [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -18,8 +18,8 @@ namespace SD_Burger.Application.DTOs
         public PaymentStatus Status { get; set; }
         
         public DateTime PaymentDate { get; set; }
-        public string TransactionId { get; set; }
-        public string Notes { get; set; }
+        public string TransactionId { get; set; } = string.Empty;
+        public string Notes { get; set; } = string.Empty;
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
@@ -37,8 +37,8 @@ namespace SD_Burger.Application.DTOs
         public PaymentStatus Status { get; set; }
         
         public DateTime PaymentDate { get; set; }
-        public string TransactionId { get; set; }
-        public string Notes { get; set; }
+        public string TransactionId { get; set; } = string.Empty;
+        public string Notes { get; set; } = string.Empty;
     }
 
     public class UpdatePaymentDto
@@ -52,8 +52,8 @@ namespace SD_Burger.Application.DTOs
         public PaymentStatus Status { get; set; }
         
         public DateTime PaymentDate { get; set; }
-        public string TransactionId { get; set; }
-        public string Notes { get; set; }
+        public string TransactionId { get; set; } = string.Empty;
+        public string Notes { get; set; } = string.Empty;
         public bool IsActive { get; set; }
     }
 } 

@@ -6,8 +6,8 @@ namespace SD_Burger.Application.Services
     {
         Task<IEnumerable<PaymentDto>> GetAllAsync();
         Task<PaymentDto> GetByIdAsync(int id);
-        Task<PaymentDto> CreateAsync(PaymentDto paymentDto);
-        Task<PaymentDto> UpdateAsync(int id, PaymentDto paymentDto);
+        Task<PaymentDto> CreateAsync(CreatePaymentDto createPaymentDto);
+        Task<PaymentDto> UpdateAsync(int id, UpdatePaymentDto updatePaymentDto);
         Task DeleteAsync(int id);
     }
 } 

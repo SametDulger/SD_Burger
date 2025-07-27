@@ -5,17 +5,17 @@ namespace SD_Burger.Core.Entities
 {
     public class User : BaseEntity
     {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string PhoneNumber { get; set; }
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
         public UserRole Role { get; set; }
         public int? BranchId { get; set; }
-        public virtual Branch Branch { get; set; }
-        public virtual ICollection<Reservation> Reservations { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual Branch? Branch { get; set; }
+        public virtual List<Reservation> Reservations { get; set; } = new();
+        public virtual List<Order> Orders { get; set; } = new();
     }
 
     public enum UserRole

@@ -31,17 +31,17 @@ namespace SD_Burger.Application.Services
             return EntityMappers.ToPaymentDto(payment);
         }
 
-        public async Task<PaymentDto> CreateAsync(PaymentDto paymentDto)
+        public async Task<PaymentDto> CreateAsync(CreatePaymentDto createPaymentDto)
         {
             var payment = new Payment
             {
-                OrderId = paymentDto.OrderId,
-                Amount = paymentDto.Amount,
-                PaymentMethod = paymentDto.PaymentMethod,
-                Status = paymentDto.Status,
-                TransactionId = paymentDto.TransactionId,
-                PaymentDate = paymentDto.PaymentDate,
-                Notes = paymentDto.Notes,
+                OrderId = createPaymentDto.OrderId,
+                Amount = createPaymentDto.Amount,
+                PaymentMethod = createPaymentDto.PaymentMethod,
+                Status = createPaymentDto.Status,
+                TransactionId = createPaymentDto.TransactionId,
+                PaymentDate = createPaymentDto.PaymentDate,
+                Notes = createPaymentDto.Notes,
                 CreatedDate = DateTime.UtcNow,
                 UpdatedDate = DateTime.UtcNow
             };
@@ -52,19 +52,18 @@ namespace SD_Burger.Application.Services
             return EntityMappers.ToPaymentDto(payment);
         }
 
-        public async Task<PaymentDto> UpdateAsync(int id, PaymentDto paymentDto)
+        public async Task<PaymentDto> UpdateAsync(int id, UpdatePaymentDto updatePaymentDto)
         {
             var payment = await _paymentRepository.GetByIdAsync(id);
             if (payment == null)
                 throw new ArgumentException($"Payment with ID {id} not found.");
 
-            payment.OrderId = paymentDto.OrderId;
-            payment.Amount = paymentDto.Amount;
-            payment.PaymentMethod = paymentDto.PaymentMethod;
-            payment.Status = paymentDto.Status;
-            payment.TransactionId = paymentDto.TransactionId;
-            payment.PaymentDate = paymentDto.PaymentDate;
-            payment.Notes = paymentDto.Notes;
+            payment.Amount = updatePaymentDto.Amount;
+            payment.PaymentMethod = updatePaymentDto.PaymentMethod;
+            payment.Status = updatePaymentDto.Status;
+            payment.TransactionId = updatePaymentDto.TransactionId;
+            payment.PaymentDate = updatePaymentDto.PaymentDate;
+            payment.Notes = updatePaymentDto.Notes;
             payment.UpdatedDate = DateTime.UtcNow;
 
             await _paymentRepository.UpdateAsync(payment);

@@ -48,14 +48,14 @@ namespace SD_Burger.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PaymentDto>> Create([FromBody] PaymentDto paymentDto)
+        public async Task<ActionResult<PaymentDto>> Create([FromBody] CreatePaymentDto createPaymentDto)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var createdPayment = await _paymentService.CreateAsync(paymentDto);
+                var createdPayment = await _paymentService.CreateAsync(createPaymentDto);
                 return CreatedAtAction(nameof(GetById), new { id = createdPayment.Id }, createdPayment);
             }
             catch (Exception ex)
@@ -65,14 +65,14 @@ namespace SD_Burger.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<PaymentDto>> Update(int id, [FromBody] PaymentDto paymentDto)
+        public async Task<ActionResult<PaymentDto>> Update(int id, [FromBody] UpdatePaymentDto updatePaymentDto)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var updatedPayment = await _paymentService.UpdateAsync(id, paymentDto);
+                var updatedPayment = await _paymentService.UpdateAsync(id, updatePaymentDto);
                 return Ok(updatedPayment);
             }
             catch (ArgumentException ex)

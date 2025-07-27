@@ -7,8 +7,8 @@ namespace SD_Burger.Application.DTOs
     public class IngredientDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public IngredientUnit Unit { get; set; }
@@ -22,8 +22,8 @@ namespace SD_Burger.Application.DTOs
 
     public class CreateIngredientDto
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public IngredientUnit Unit { get; set; }
@@ -34,8 +34,8 @@ namespace SD_Burger.Application.DTOs
 
     public class UpdateIngredientDto
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public IngredientUnit Unit { get; set; }

@@ -9,10 +9,10 @@ namespace SD_Burger.Application.DTOs
         public DateTime ReservationDate { get; set; }
         public TimeSpan ReservationTime { get; set; }
         public int GuestCount { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerPhone { get; set; }
-        public string CustomerEmail { get; set; }
-        public string SpecialRequests { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
+        public string CustomerPhone { get; set; } = string.Empty;
+        public string CustomerEmail { get; set; } = string.Empty;
+        public string SpecialRequests { get; set; } = string.Empty;
         
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public ReservationStatus Status { get; set; }
@@ -20,9 +20,9 @@ namespace SD_Burger.Application.DTOs
         public int TableId { get; set; }
         public int TableNumber { get; set; }
         public int BranchId { get; set; }
-        public string BranchName { get; set; }
+        public string? BranchName { get; set; }
         public int? UserId { get; set; }
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 
@@ -31,10 +31,10 @@ namespace SD_Burger.Application.DTOs
         public DateTime ReservationDate { get; set; }
         public TimeSpan ReservationTime { get; set; }
         public int GuestCount { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerPhone { get; set; }
-        public string CustomerEmail { get; set; }
-        public string SpecialRequests { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
+        public string CustomerPhone { get; set; } = string.Empty;
+        public string CustomerEmail { get; set; } = string.Empty;
+        public string SpecialRequests { get; set; } = string.Empty;
         public int TableId { get; set; }
         public int BranchId { get; set; }
         public int? UserId { get; set; }
@@ -45,10 +45,10 @@ namespace SD_Burger.Application.DTOs
         public DateTime ReservationDate { get; set; }
         public TimeSpan ReservationTime { get; set; }
         public int GuestCount { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerPhone { get; set; }
-        public string CustomerEmail { get; set; }
-        public string SpecialRequests { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
+        public string CustomerPhone { get; set; } = string.Empty;
+        public string CustomerEmail { get; set; } = string.Empty;
+        public string SpecialRequests { get; set; } = string.Empty;
         
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public ReservationStatus Status { get; set; }

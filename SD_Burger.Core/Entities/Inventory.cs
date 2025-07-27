@@ -12,9 +12,7 @@ namespace SD_Burger.Core.Entities
         public decimal MinimumStock { get; set; }
         public decimal Price { get; set; }
         public DateTime LastUpdated { get; set; }
-        public bool IsActive { get; set; } = true;
-        public DateTime UpdatedDate { get; set; }
-        public virtual Ingredient Ingredient { get; set; }
-        public virtual Branch Branch { get; set; }
+        public virtual Ingredient? Ingredient { get; set; }
+        public virtual Branch? Branch { get; set; }
     }
 } 

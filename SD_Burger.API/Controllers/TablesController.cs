@@ -48,14 +48,14 @@ namespace SD_Burger.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TableDto>> Create([FromBody] TableDto tableDto)
+        public async Task<ActionResult<TableDto>> Create([FromBody] CreateTableDto createTableDto)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var createdTable = await _tableService.CreateAsync(tableDto);
+                var createdTable = await _tableService.CreateAsync(createTableDto);
                 return CreatedAtAction(nameof(GetById), new { id = createdTable.Id }, createdTable);
             }
             catch (Exception ex)
@@ -65,14 +65,14 @@ namespace SD_Burger.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<TableDto>> Update(int id, [FromBody] TableDto tableDto)
+        public async Task<ActionResult<TableDto>> Update(int id, [FromBody] UpdateTableDto updateTableDto)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var updatedTable = await _tableService.UpdateAsync(id, tableDto);
+                var updatedTable = await _tableService.UpdateAsync(id, updateTableDto);
                 return Ok(updatedTable);
             }
             catch (ArgumentException ex)

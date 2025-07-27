@@ -4,16 +4,16 @@ namespace SD_Burger.Core.Entities
 {
     public class Branch : BaseEntity
     {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public int TableCount { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
-        public virtual ICollection<Table> Tables { get; set; }
-        public virtual ICollection<Reservation> Reservations { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<Inventory> Inventories { get; set; }
+        public virtual List<User> Users { get; set; } = new();
+        public virtual List<Table> Tables { get; set; } = new();
+        public virtual List<Reservation> Reservations { get; set; } = new();
+        public virtual List<Order> Orders { get; set; } = new();
+        public virtual List<Inventory> Inventories { get; set; } = new();
     }
 } 

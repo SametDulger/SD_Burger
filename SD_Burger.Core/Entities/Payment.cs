@@ -12,9 +12,7 @@ namespace SD_Burger.Core.Entities
         public DateTime PaymentDate { get; set; }
         public string TransactionId { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
-        public bool IsActive { get; set; } = true;
-        public DateTime UpdatedDate { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual Order? Order { get; set; }
     }
 
     public enum PaymentMethod

@@ -6,22 +6,22 @@ namespace SD_Burger.Core.Entities
 {
     public class Order : BaseEntity
     {
-        public string OrderNumber { get; set; }
+        public string OrderNumber { get; set; } = string.Empty;
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
         public OrderPriority Priority { get; set; }
         public decimal TotalAmount { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerPhone { get; set; }
-        public string Notes { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
+        public string CustomerPhone { get; set; } = string.Empty;
+        public string Notes { get; set; } = string.Empty;
         public int TableId { get; set; }
         public int BranchId { get; set; }
         public int? WaiterId { get; set; }
-        public virtual Table Table { get; set; }
-        public virtual Branch Branch { get; set; }
-        public virtual User Waiter { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
-        public virtual Payment Payment { get; set; }
+        public virtual Table? Table { get; set; }
+        public virtual Branch? Branch { get; set; }
+        public virtual User? Waiter { get; set; }
+        public virtual List<OrderItem> OrderItems { get; set; } = new();
+        public virtual Payment? Payment { get; set; }
     }
 
     public enum OrderStatus
